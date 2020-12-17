@@ -31,9 +31,9 @@ class ModelExtensionModuleMercadolivre extends Model
         $response = self::$mlSdk->get($resource);
         $this->treatResponse($response, $resource);
         $product = $this->getProductML($response['body']->item_id);
-        $result = $this->db->query('SELECT COUNT(*) AS total FROM `' . DB_PREFIX . "mercadolivre_questions` WHERE `question_id` = '" . (int) $response['body']->id . "' AND `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
+        $result = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "mercadolivre_questions` WHERE `question_id` = '" . (int) $response['body']->id . "' AND `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
         if ($result->row['total'] > 0) {
-            $this->db->query('UPDATE `' . DB_PREFIX . "mercadolivre_questions` SET `answer` = '" . $this->db->escape($response['body']->answer->text) . "', `answered_at` = NOW() WHERE `question_id` = '" . (int) $response['body']->id . "' AND `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
+            $this->db->query("UPDATE `" . DB_PREFIX . "mercadolivre_questions` SET `answer` = '" . $this->db->escape($response['body']->answer->text) . "', `answered_at` = NOW() WHERE `question_id` = '" . (int) $response['body']->id . "' AND `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
         } else {
             if (!empty($product)) {
                 $query = "INSERT INTO `" . DB_PREFIX . "mercadolivre_questions` SET `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "', `question_id` = '" . (int) $response['body']->id . "', `question` = '" . $this->db->escape($response['body']->text) . "', `created_at` = NOW()";
@@ -87,7 +87,7 @@ class ModelExtensionModuleMercadolivre extends Model
     }
     public function getProductML($product_ml)
     {
-        $result = $this->db->query('SELECT * FROM `' . DB_PREFIX . "mercadolivre_products` WHERE `ml_product_code` = '" . $this->db->escape($product_ml) . "'");
+        $result = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mercadolivre_products` WHERE `ml_product_code` = '" . $this->db->escape($product_ml) . "'");
         return $result->row;
     }
     private function treatNotificationForOrders($resource)
@@ -95,7 +95,7 @@ class ModelExtensionModuleMercadolivre extends Model
         $this->prepareForRequest();
         $response = self::$mlSdk->get($resource);
         $this->treatResponse($response, $resource);
-        $result = $this->db->query('SELECT COUNT(*) AS total FROM `' . DB_PREFIX . "mercadolivre_orders` WHERE `ml_id` = '" . (int) $response['body']->id . "'");
+        $result = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "mercadolivre_orders` WHERE `ml_id` = '" . (int) $response['body']->id . "'");
         if ($result->row['total'] > 0) {
             $this->updateOrder($response['body']);
         } else {
@@ -106,7 +106,7 @@ class ModelExtensionModuleMercadolivre extends Model
     }
     private function updateOrder($order_ml)
     {
-        $this->db->query('UPDATE `' . DB_PREFIX . "mercadolivre_orders` SET `status` = '" . $this->db->escape($order_ml->status) . "' WHERE `ml_id` = '" . (int) $order_ml->id . "'");
+        $this->db->query("UPDATE `" . DB_PREFIX . "mercadolivre_orders` SET `status` = '" . $this->db->escape($order_ml->status) . "' WHERE `ml_id` = '" . (int) $order_ml->id . "'");
         if ($order_ml->status == 'cancelled') {
             $this->sumStock($order_ml);
         }
@@ -127,7 +127,7 @@ class ModelExtensionModuleMercadolivre extends Model
     {
         $creationDate = date('Y-m-d H:i:s', strtotime($order_ml->date_created));
         $expirationDate = date('Y-m-d H:i:s', strtotime($order_ml->expiration_date));
-        $this->db->query('INSERT INTO `' . DB_PREFIX . "mercadolivre_orders` SET `ml_id` = '" . (int) $order_ml->id . "', `date_created` = '{$creationDate}', `expiration_date` = '{$expirationDate}', \r\n            `total` = '" . (double) $order_ml->total_amount . "', `buyer` = '" . $this->db->escape($order_ml->buyer->first_name . ' ' . $order_ml->buyer->last_name) . "', \r\n            `buyer_document_type` = '" . $this->db->escape($order_ml->buyer->billing_info->doc_type) . "', `buyer_document_number` = '" . $this->db->escape($order_ml->buyer->billing_info->doc_number) . "', \r\n            `status` = '" . $this->db->escape($order_ml->status) . "', `created_at` = NOW()");
+        $this->db->query("INSERT INTO `" . DB_PREFIX . "mercadolivre_orders` SET `ml_id` = '" . (int) $order_ml->id . "', `date_created` = '{$creationDate}', `expiration_date` = '{$expirationDate}', \r\n            `total` = '" . (double) $order_ml->total_amount . "', `buyer` = '" . $this->db->escape($order_ml->buyer->first_name . ' ' . $order_ml->buyer->last_name) . "', \r\n            `buyer_document_type` = '" . $this->db->escape($order_ml->buyer->billing_info->doc_type) . "', `buyer_document_number` = '" . $this->db->escape($order_ml->buyer->billing_info->doc_number) . "', \r\n            `status` = '" . $this->db->escape($order_ml->status) . "', `created_at` = NOW()");
         $order_id = $this->db->getLastId();
         if (is_array($order_ml->order_items)) {
             foreach ($order_ml->order_items as $item) {
@@ -137,7 +137,7 @@ class ModelExtensionModuleMercadolivre extends Model
                         $variation = $key + 1 . ' - ' . $variation->name . ': ' . $variation->value_name . '<br />';
                     }
                 }
-                $this->db->query('INSERT INTO `' . DB_PREFIX . "mercadolivre_orders_products` SET `mercadolivre_order_id` = '{$order_id}', `name` = '" . $this->db->escape($item->item->title) . "', `variation` = '" . $this->db->escape($variation) . "'");
+                $this->db->query("INSERT INTO `" . DB_PREFIX . "mercadolivre_orders_products` SET `mercadolivre_order_id` = '{$order_id}', `name` = '" . $this->db->escape($item->item->title) . "', `variation` = '" . $this->db->escape($variation) . "'");
             }
         }
     }
@@ -145,7 +145,7 @@ class ModelExtensionModuleMercadolivre extends Model
     {
         if (is_array($order_ml->order_items)) {
             foreach ($order_ml->order_items as $item) {
-                $result = $this->db->query('SELECT * FROM `' . DB_PREFIX . "mercadolivre_products` WHERE `ml_product_code` = '" . $this->db->escape($item->item->id) . "'");
+                $result = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mercadolivre_products` WHERE `ml_product_code` = '" . $this->db->escape($item->item->id) . "'");
                 $product_ml = $result->row;
                 if (!empty($product_ml) && $product_ml['subtract_product']) {
                     $this->load->model('catalog/product');
@@ -166,7 +166,7 @@ class ModelExtensionModuleMercadolivre extends Model
     {
         if (is_array($order_ml->order_items)) {
             foreach ($order_ml->order_items as $item) {
-                $result = $this->db->query('SELECT * FROM `' . DB_PREFIX . "mercadolivre_products` WHERE `ml_product_code` = '" . $this->db->escape($item->item->id) . "'");
+                $result = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mercadolivre_products` WHERE `ml_product_code` = '" . $this->db->escape($item->item->id) . "'");
                 $product_ml = $result->row;
                 if (!empty($product_ml) && $product_ml['subtract_product']) {
                     $this->load->model('catalog/product');

@@ -41,11 +41,11 @@ class ModelExtensionModuleMercadolivre extends Model
     }
     public function createCron()
     {
-        $this->db->query('INSERT INTO `' . DB_PREFIX . "cron` SET `code` = 'mercadolivre', `cycle` = 'hour', `action` = 'extension/module/mercadolivre/cron', `status` = '1', `date_added` = NOW()");
+        $this->db->query("INSERT INTO `" . DB_PREFIX . "cron` SET `code` = 'mercadolivre', `cycle` = 'hour', `action` = 'extension/module/mercadolivre/cron', `status` = '1', `date_added` = NOW()");
     }
     public function removeCron()
     {
-        $this->db->query('DELETE FROM `' . DB_PREFIX . "cron` WHERE `code` = 'mercadolivre'");
+        $this->db->query("DELETE FROM `" . DB_PREFIX . "cron` WHERE `code` = 'mercadolivre'");
     }
     public function removerTabelas()
     {
@@ -84,13 +84,13 @@ class ModelExtensionModuleMercadolivre extends Model
         $this->prepareForRequest();
         $response = self::$mlSdk->post('items', $request);
         $this->treatResponse($response, 'items', $request);
-        $this->db->query('INSERT INTO `' . DB_PREFIX . "mercadolivre_products` SET `ml_product_code` = '" . $this->db->escape($response['body']->id) . "', `condition` = '" . $this->db->escape($response['body']->condition) . "', `product_id` = '" . $product['product_id'] . "', `listing_type_id` = '" . $this->db->escape($response['body']->listing_type_id) . "', `mercadolivre_category_id` = '" . $this->db->escape($response['body']->category_id) . "', `status` = '" . $response['body']->status . "', `subtract_product` = '" . (int) $product['subtract_product'] . "', `price_adjustments` = '" . $this->db->escape($product['price_adjustment']) . "', `created_at` = NOW()");
+        $this->db->query("INSERT INTO `" . DB_PREFIX . "mercadolivre_products` SET `ml_product_code` = '" . $this->db->escape($response['body']->id) . "', `condition` = '" . $this->db->escape($response['body']->condition) . "', `product_id` = '" . $product['product_id'] . "', `listing_type_id` = '" . $this->db->escape($response['body']->listing_type_id) . "', `mercadolivre_category_id` = '" . $this->db->escape($response['body']->category_id) . "', `status` = '" . $response['body']->status . "', `subtract_product` = '" . (int) $product['subtract_product'] . "', `price_adjustments` = '" . $this->db->escape($product['price_adjustment']) . "', `created_at` = NOW()");
         $product_ml_id = $this->db->getLastId();
         foreach ($response['body']->variations as $variation) {
             foreach ($variation->attributes as $attribute) {
                 if ($attribute->id == 'SELLER_SKU') {
                     $key = array_search($attribute->value_name, array_column($product['variations'], 'sku'));
-                    $this->db->query('INSERT INTO `' . DB_PREFIX . "mercadolivre_variations` SET `mercadolivre_products_id` = '" . $product_ml_id . "', `ml_variation_code` = '" . (int) $variation->id . "', `option_value_id` = '" . $product['variations'][$key]['sku'] . "', `created_at` = NOW()");
+                    $this->db->query("INSERT INTO `" . DB_PREFIX . "mercadolivre_variations` SET `mercadolivre_products_id` = '" . $product_ml_id . "', `ml_variation_code` = '" . (int) $variation->id . "', `option_value_id` = '" . $product['variations'][$key]['sku'] . "', `created_at` = NOW()");
                 }
             }
         }
@@ -297,17 +297,17 @@ class ModelExtensionModuleMercadolivre extends Model
     }
     public function getProductML($product_id)
     {
-        $result = $this->db->query('SELECT * FROM `' . DB_PREFIX . "mercadolivre_products` WHERE `product_id` = '" . (int) $product_id . "'");
+        $result = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mercadolivre_products` WHERE `product_id` = '" . (int) $product_id . "'");
         return $result->rows;
     }
     public function getProductMLBy($mercadolivre_products_id)
     {
-        $result = $this->db->query('SELECT * FROM `' . DB_PREFIX . "mercadolivre_products` WHERE `mercadolivre_products_id` = '" . (int) $mercadolivre_products_id . "'");
+        $result = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mercadolivre_products` WHERE `mercadolivre_products_id` = '" . (int) $mercadolivre_products_id . "'");
         return $result->row;
     }
     private function changeStatus($product, $newStatus)
     {
-        $this->db->query('UPDATE `' . DB_PREFIX . "mercadolivre_products` SET `status` = '" . $newStatus . "' WHERE `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
+        $this->db->query("UPDATE `" . DB_PREFIX . "mercadolivre_products` SET `status` = '" . $newStatus . "' WHERE `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
     }
     public function pauseProduct($product_id)
     {
@@ -339,18 +339,18 @@ class ModelExtensionModuleMercadolivre extends Model
         $this->prepareForRequest();
         $response = self::$mlSdk->put('items/' . $product['ml_product_code'], $request);
         $this->treatResponse($response, 'items/' . $product['ml_product_code'], $request);
-        $this->db->query('UPDATE `' . DB_PREFIX . "mercadolivre_products` SET `updated_at` = NOW() WHERE `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
+        $this->db->query("UPDATE `" . DB_PREFIX . "mercadolivre_products` SET `updated_at` = NOW() WHERE `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
     }
     public function updateAllStockAndPrices()
     {
-        $result = $this->db->query('SELECT * FROM `' . DB_PREFIX . "mercadolivre_products` WHERE (`updated_at` IS NULL OR `updated_at` < '" . date('Y-m-d H:i:s', strtotime('-5 hours')) . "') ORDER BY `updated_at` ASC LIMIT 50");
+        $result = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mercadolivre_products` WHERE (`updated_at` IS NULL OR `updated_at` < '" . date('Y-m-d H:i:s', strtotime('-5 hours')) . "') ORDER BY `updated_at` ASC LIMIT 50");
         foreach ($result->rows as $product) {
             $this->updateStockAndPrice($product);
         }
     }
     public function getProductVariationsML($mercadolivre_products_id)
     {
-        $result = $this->db->query('SELECT * FROM `' . DB_PREFIX . "mercadolivre_variations` WHERE `mercadolivre_products_id` = '" . (int) $mercadolivre_products_id . "'");
+        $result = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mercadolivre_variations` WHERE `mercadolivre_products_id` = '" . (int) $mercadolivre_products_id . "'");
         return $result->rows;
     }
     private function createRequestForUpdateStockAndPrice($product, $variations)
@@ -432,24 +432,24 @@ class ModelExtensionModuleMercadolivre extends Model
             $request = ['deleted' => 'true'];
             self::$mlSdk->put($uri, $request);
             $this->treatResponse($response, $uri, $request);
-            $this->db->query('DELETE FROM `' . DB_PREFIX . "mercadolivre_products` WHERE `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
-            $this->db->query('DELETE FROM `' . DB_PREFIX . "mercadolivre_variations` WHERE `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
-            $this->db->query('DELETE FROM `' . DB_PREFIX . "mercadolivre_questions` WHERE `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "mercadolivre_products` WHERE `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "mercadolivre_variations` WHERE `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "mercadolivre_questions` WHERE `mercadolivre_products_id` = '" . $product['mercadolivre_products_id'] . "'");
         }
         return true;
     }
     public function getCategoryMl($category_id)
     {
-        $result = $this->db->query('SELECT * FROM `' . DB_PREFIX . "mercadolivre_categories` WHERE `category_id` = '" . $category_id . "'");
+        $result = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mercadolivre_categories` WHERE `category_id` = '" . $category_id . "'");
         return $result->row;
     }
     public function addCategory($category_id, $category_code_ml)
     {
-        $this->db->query('INSERT INTO `' . DB_PREFIX . "mercadolivre_categories` SET `category_id` = '" . $category_id . "', `mercadolivre_category_code` = '" . $category_code_ml . "', `created_at`= NOW()");
+        $this->db->query("INSERT INTO `" . DB_PREFIX . "mercadolivre_categories` SET `category_id` = '" . $category_id . "', `mercadolivre_category_code` = '" . $category_code_ml . "', `created_at`= NOW()");
     }
     public function deleteCategories()
     {
-        $this->db->query('DELETE FROM `' . DB_PREFIX . "mercadolivre_categories`");
+        $this->db->query("DELETE FROM `" . DB_PREFIX . "mercadolivre_categories`");
     }
     public function getTotalOrders($data = array())
     {
@@ -469,15 +469,15 @@ class ModelExtensionModuleMercadolivre extends Model
     }
     public function getOrdersProducts($ml_order_id)
     {
-        $result = $this->db->query('SELECT * FROM `' . DB_PREFIX . "mercadolivre_orders_products` WHERE `mercadolivre_order_id` = '" . (int) $ml_order_id . "'");
+        $result = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mercadolivre_orders_products` WHERE `mercadolivre_order_id` = '" . (int) $ml_order_id . "'");
         return $result->rows;
     }
     public function removeOrder($ml_order_id)
     {
-        $orders = $this->db->query('SELECT * FROM `' . DB_PREFIX . "mercadolivre_orders` WHERE `mercadolivre_order_id` = '" . (int) $ml_order_id . "'");
+        $orders = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mercadolivre_orders` WHERE `mercadolivre_order_id` = '" . (int) $ml_order_id . "'");
         if (!empty($orders)) {
-            $this->db->query('DELETE FROM `' . DB_PREFIX . "mercadolivre_orders_products` WHERE `mercadolivre_order_id` = '" . (int) $ml_order_id . "'");
-            $this->db->query('DELETE FROM `' . DB_PREFIX . "mercadolivre_orders` WHERE `mercadolivre_order_id` = '" . (int) $ml_order_id . "'");
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "mercadolivre_orders_products` WHERE `mercadolivre_order_id` = '" . (int) $ml_order_id . "'");
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "mercadolivre_orders` WHERE `mercadolivre_order_id` = '" . (int) $ml_order_id . "'");
             return true;
         }
         return false;
@@ -537,7 +537,7 @@ class ModelExtensionModuleMercadolivre extends Model
     }
     public function getQuestion($question_id)
     {
-        $query = 'SELECT * FROM `' . DB_PREFIX . "mercadolivre_questions` WHERE `mercadolivre_question_id` = '" . (int) $question_id . "'";
+        $query = "SELECT * FROM `" . DB_PREFIX . "mercadolivre_questions` WHERE `mercadolivre_question_id` = '" . (int) $question_id . "'";
         $result = $this->db->query($query);
         return $result->row;
     }
@@ -545,7 +545,7 @@ class ModelExtensionModuleMercadolivre extends Model
     {
         $question = $this->getQuestion($question_id);
         if (!empty($question)) {
-            $this->db->query('DELETE FROM `' . DB_PREFIX . "mercadolivre_questions` WHERE `mercadolivre_question_id` = '" . (int) $question_id . "'");
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "mercadolivre_questions` WHERE `mercadolivre_question_id` = '" . (int) $question_id . "'");
             return true;
         }
         return false;
