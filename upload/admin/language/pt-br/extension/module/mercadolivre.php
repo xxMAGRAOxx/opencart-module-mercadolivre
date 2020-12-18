@@ -153,7 +153,7 @@ $_['button_delete'] = 'Apagar';
 $_['button_order_products'] = 'Ver produtos do pedido';
 $_['button_synchronize_stock_price'] = 'Sicronizar preço e estoque';
 // Errors
-$_['error_permission_message'] = 'Atenção: Você não tem permissão para alterar este módulo.';
+$_['error_permission_message']      = 'Atenção: Você não tem permissão para alterar este módulo.';
 $_['message_error_app_id'] = 'App id do Mercado Livre inválido';
 $_['message_error_app_secret'] = 'App secret do Mercado Livre inválido';
 $_['message_error_app_country'] = 'Selecione um país de funcionamento do Mercado Livre';
@@ -165,9 +165,10 @@ $_['message_error_price_adjustment'] = 'As regras de ajuste de preço contém ca
 $_['message_error_extesion_not_configured'] = 'Por favor, configure a extensão primeiro';
 $_['message_error_select_category_or_unselect'] = 'Por favor, selecione uma categoria ou desmarque todas';
 $_['message_error_configs_not_done'] = 'Por favor, configure tudo antes de entrar aqui!';
-$_['message_error_answer'] = 'Por favor, para enviar uma resposta, escreva uma mensagem!';
-$_['message_log_error_warning'] = 'Aviso: Seu arquivo de log %s é %s!';
+$_['message_error_answer']          = 'Por favor, para enviar uma resposta, escreva uma mensagem!';
+$_['message_log_error_warning']    = 'Aviso: Seu arquivo de log %s é %s!';
 $_['message_send_products_error_title'] = 'Os seguintes erros ocorreram:';
+
 $_['invalid_question'] = 'Não é possível responder à pergunta.';
 $_['invalid_post_body'] = 'Parâmetros inválidos.';
 //status

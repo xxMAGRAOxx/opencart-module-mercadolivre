@@ -15,20 +15,7 @@
       ]]></add>
         </operation>
     </file>
-
-    <file path="catalog/controller/startup/seo_url.php">
-        <operation>
-            <search><![CDATA[$this->request->get['route'] = 'error/not_found';]]></search>
-            <add position="replace"><![CDATA[
-               if ($this->request->get['_route_'] == 'module_mercadolivre') {
-                        $this->request->get['route'] = 'extension/module/mercadolivre';
-                    } else {
-                        $this->request->get['route'] = 'error/not_found';
-                    }
-      ]]></add>
-        </operation>
-    </file>
-
+	
     <file path="admin/language/pt-br/common/column_left.php">
         <operation>
             <search><![CDATA[$_['text_extension']]]></search>
@@ -54,43 +41,43 @@ $_['text_mercadolivre_logs']                = 'Logs';
 
           $mercadolivre[] = array(
             'name'	   => $this->language->get('text_mercadolivre_dashboard'),
-            'href'     => $this->url->link('extension/module/mercadolivre/dashboard', 'user_token=' . $this->session->data['user_token'], true),
+            'href'     => $this->url->link('extension/module/mercadolivre/dashboard', 'token=' . $this->session->data['token'], true),
             'children' => array()
         );
 
         $mercadolivre[] = array(
             'name'	   => $this->language->get('text_mercadolivre_settings'),
-            'href'     => $this->url->link('extension/module/mercadolivre', 'user_token=' . $this->session->data['user_token'], true),
+            'href'     => $this->url->link('extension/module/mercadolivre', 'token=' . $this->session->data['token'], true),
             'children' => array()
         );
 
          $mercadolivre[] = array(
             'name'	   => $this->language->get('text_mercadolivre_authentication'),
-            'href'     => $this->url->link('extension/module/mercadolivre/authentication', 'user_token=' . $this->session->data['user_token'], true),
+            'href'     => $this->url->link('extension/module/mercadolivre/authentication', 'token=' . $this->session->data['token'], true),
             'children' => array()
         );
 
         $mercadolivre[] = array(
             'name'	   => $this->language->get('text_mercadolivre_orders'),
-            'href'     => $this->url->link('extension/module/mercadolivre/orders', 'user_token=' . $this->session->data['user_token'], true),
+            'href'     => $this->url->link('extension/module/mercadolivre/orders', 'token=' . $this->session->data['token'], true),
             'children' => array()
         );
 
         $mercadolivre[] = array(
             'name'	   => $this->language->get('text_mercadolivre_questions'),
-            'href'     => $this->url->link('extension/module/mercadolivre/questions', 'user_token=' . $this->session->data['user_token'], true),
+            'href'     => $this->url->link('extension/module/mercadolivre/questions', 'token=' . $this->session->data['token'], true),
             'children' => array()
         );
 
         $mercadolivre[] = array(
             'name'	   => $this->language->get('text_mercadolivre_products'),
-            'href'     => $this->url->link('extension/module/mercadolivre/products', 'user_token=' . $this->session->data['user_token'], true),
+            'href'     => $this->url->link('extension/module/mercadolivre/products', 'token=' . $this->session->data['token'], true),
             'children' => array()
         );
 
         $mercadolivre[] = array(
             'name'	   => $this->language->get('text_mercadolivre_logs'),
-            'href'     => $this->url->link('extension/module/mercadolivre/logs', 'user_token=' . $this->session->data['user_token'], true),
+            'href'     => $this->url->link('extension/module/mercadolivre/logs', 'token=' . $this->session->data['token'], true),
             'children' => array()
         );
 
