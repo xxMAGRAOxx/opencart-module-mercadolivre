@@ -1,73 +1,60 @@
-{{ header }} {{ column_left }}
+<?php echo $header; ?> <?php echo $column_left; ?>
 <div id="content">
 
     <div class="page-header">
         <div class="container-fluid">
 
             <div class="pull-right">
-                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
-                <button type="button" data-toggle="tooltip" title="{{ button_filter }}" onclick="$('#filter-product').toggleClass('hidden-sm hidden-xs');" class="btn btn-default hidden-md hidden-lg"><i class="fa fa-filter"></i></button>
-                <a href="javascript:loadModalAddProducts()" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
-                <a href="javascript:synchronizeStockPrice()" id="btn-synchronize" data-loading-text="{{ text_loading }}" data-toggle="tooltip" title="{{ button_synchronize_stock_price }}" class="btn btn-warning"><i class="fa fa-refresh"></i></a>
-                <button type="button" form="form-product" data-toggle="tooltip" title="{{ button_disconnect }}" class="btn btn-danger" onclick="confirm('{{ text_confirm }}') ? $('#form-product').submit() : false;"><i class="fa fa-unlink"></i></button>
-                <button type="button" form="form-product" data-toggle="tooltip" title="{{ button_pause }}" class="btn btn-warning" onclick="pauseProducts()"><i class="fa fa-pause"></i></button>
-                <button type="button" form="form-product" data-toggle="tooltip" title="{{ button_active }}" class="btn btn-success" onclick="activeProducts()"><i class="fa fa-play"></i></button>
+                <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
+                <button type="button" data-toggle="tooltip" title="<?php echo $button_filter; ?>" onclick="$('#filter-product').toggleClass('hidden-sm hidden-xs');" class="btn btn-default hidden-md hidden-lg"><i class="fa fa-filter"></i></button>
+                <a href="javascript:loadModalAddProducts()" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+                <a href="javascript:synchronizeStockPrice()" id="btn-synchronize" data-loading-text="<?php echo $text_loading; ?>" data-toggle="tooltip" title="<?php echo $button_synchronize_stock_price; ?>" class="btn btn-warning"><i class="fa fa-refresh"></i></a>
+                <button type="button" form="form-product" data-toggle="tooltip" title="<?php echo $button_disconnect; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-product').submit() : false;"><i class="fa fa-unlink"></i></button>
+                <button type="button" form="form-product" data-toggle="tooltip" title="<?php echo $button_pause; ?>" class="btn btn-warning" onclick="pauseProducts()"><i class="fa fa-pause"></i></button>
+                <button type="button" form="form-product" data-toggle="tooltip" title="<?php echo $button_active; ?>" class="btn btn-success" onclick="activeProducts()"><i class="fa fa-play"></i></button>
             </div>
 
-            <h1>{{ heading_title }}</h1>
+            <h1><?php echo $heading_title; ?></h1>
             <ul class="breadcrumb">
-                {% for breadcrumb in breadcrumbs %}
-                    <li><a href="{{ breadcrumb.href }} ">{{ breadcrumb.text }}</a></li>
-                {% endfor %}
+                <?php foreach ($breadcrumbs as $breadcrumb) { ?>
+                    <li><a href="<?php echo $breadcrumb['href']; ?> "><?php echo $breadcrumb['text']; ?></a></li>
+                <?php } ?>
             </ul>
         </div>
     </div>
 
     <div class="container-fluid">
-        {% if error_warning %}
-            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
-                <button type="button" class="close" data-dismiss="alert">&times</button>
-            </div>
-        {% endif %}
-
-        {% if success %}
-            <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-            </div>
-        {% endif %}
-
         <div class="row">
-
             <div id="filter-product" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
+                        <h3 class="panel-title"><i class="fa fa-filter"></i> <?php echo $text_filter; ?></h3>
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
-                            <label class="control-label" for="input-name">{{ entry_product_name }}</label>
-                            <input type="text" name="filter_name" value="{{ filter_name }}" placeholder="{{ entry_product_name }}" id="input-name" class="form-control"/>
+                            <label class="control-label" for="input-name"><?php echo $entry_product_name; ?></label>
+                            <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_product_name; ?>" id="input-name" class="form-control"/>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="input-product_connected">{{ entry_product_connected }}</label>
+                            <label class="control-label" for="input-product_connected"><?php echo $entry_product_connected; ?></label>
                             <select name="filter_product_connected" id="input-product_connected" class="form-control">
                                 <option value=""></option>
-                                <option value="1" {{ filter_product_connected == '1' ? 'selected' : '' }}>{{ text_enabled }}</option>
-                                <option value="0" {{ filter_product_connected == '0' ? 'selected' : '' }}>{{ text_disabled }}</option>
+                                <option value="1" <?php echo $filter_product_connected == '1' ? 'selected' : ''; ?>><?php echo $text_enabled; ?></option>
+                                <option value="0" <?php echo $filter_product_connected == '0' ? 'selected' : ''; ?>><?php echo $text_disabled; ?></option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="input-status">{{ entry_status }}</label>
+                            <label class="control-label" for="input-status"><?php echo $entry_status; ?></label>
                             <select name="filter_status" id="input-status" class="form-control">
                                 <option value=""></option>
-                                <option value="1" {{ filter_status == '1' ? 'selected' : '' }}>{{ text_enabled }}</option>
-                                <option value="0" {{ filter_status == '0' ? 'selected' : '' }}>{{ text_disabled }}</option>
+                                <option value="1" <?php echo $filter_status == '1' ? 'selected' : ''; ?>><?php echo $text_enabled; ?></option>
+                                <option value="0" <?php echo $filter_status == '0' ? 'selected' : ''; ?>><?php echo $text_disabled; ?></option>
                             </select>
                         </div>
                         <div class="form-group text-right">
-                            <button type="button" id="button-filter" onclick="filterProducts()" class="btn btn-default"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+                            <button type="button" id="button-filter" onclick="filterProducts()" class="btn btn-default"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
                         </div>
                     </div>
                 </div>
@@ -76,77 +63,77 @@
             <div class="col-md-9 col-md-pull-3 col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+                        <h3 class="panel-title"><i class="fa fa-list"></i></h3>
                     </div>
                     <div class="panel-body">
-                        <form action="{{ disconnect }}" method="post" enctype="multipart/form-data" id="form-product">
+                        <form action="<?php echo $disconnect; ?>" method="post" enctype="multipart/form-data" id="form-product">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);"/></td>
-                                        <td class="text-center">{{ column_image }}</td>
-                                        <td class="text-left">{% if sort == 'pd.name' %} <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a> {% else %} <a href="{{ sort_name }}">{{ column_name }}</a> {% endif %}</td>
-                                        <td class="text-right">{% if sort == 'p.quantity' %} <a href="{{ sort_quantity }}" class="{{ order|lower }}">{{ column_quantity }}</a> {% else %} <a href="{{ sort_quantity }}">{{ column_quantity }}</a> {% endif %}</td>
-                                        <td class="text-left">{% if sort == 'p.status' %} <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a> {% else %} <a href="{{ sort_status }}">{{ column_status }}</a> {% endif %}</td>
-                                        <td class="text-left">{% if sort == 'p.price' %} <a href="{{ sort_price }}" class="{{ order|lower }}">{{ column_price }}</a> {% else %} <a href="{{ sort_price }}">{{ column_price }}</a> {% endif %}</td>
-                                        <td class="text-left">{{ column_mercadolivre_id }}</td>
-                                        <td class="text-left">{{ column_mercadolivre_category }}</td>
-                                        <td class="text-left">{{ column_mercadolivre_status }}</td>
-                                        <td class="text-right">{{ column_action }}</td>
+                                        <td class="text-center"><?php echo $column_image; ?></td>
+                                        <td class="text-left"><?php if ($sort == 'pd.name'): ?> <a href="<?php echo $sort_name; ?>" class="{{ order|lower }}"><?php echo $column_name; ?></a> <?php else: ?> <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a> <?php endif; ?></td>
+                                        <td class="text-right"><?php if ($sort == 'p.quantity'): ?> <a href="<?php echo $sort_quantity; ?>" class="{{ order|lower }}"><?php echo $column_quantity; ?></a> <?php else: ?> <a href="<?php echo $sort_quantity; ?>"><?php echo $column_quantity; ?></a> <?php endif; ?></td>
+                                        <td class="text-left"><?php if ($sort == 'p.status'): ?> <a href="<?php echo $sort_status; ?>" class="{{ order|lower }}"><?php echo $column_status; ?></a> <?php else: ?> <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a> <?php endif; ?></td>
+                                        <td class="text-left"><?php if ($sort == 'p.price'): ?> <a href="<?php echo $sort_price; ?>" class="{{ order|lower }}"><?php echo $column_price; ?></a> <?php else: ?> <a href="<?php echo $sort_price; ?>"><?php echo $column_price; ?></a> <?php endif; ?></td>
+                                        <td class="text-left"><?php echo $column_mercadolivre_id; ?></td>
+                                        <td class="text-left"><?php echo $column_mercadolivre_category; ?></td>
+                                        <td class="text-left"><?php echo $column_mercadolivre_status; ?></td>
+                                        <td class="text-right"></td>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% if products %}
-                                        {% for product in products %}
+                                    <?php if ($products): ?>
+                                        <?php foreach ($products as $product) { ?>
                                             <tr>
                                                 <td class="text-center">
-                                                    <input type="checkbox" name="selected[]" data-ml-code="{{ product.ml_id }}" value="{{ product.product_id }}" {{ product.product_id in selected ? 'checked' : '' }} />
+                                                    <input type="checkbox" name="selected[]" data-ml-code="<?php echo $product['ml_id']; ?>" value="<?php echo $product['product_id']; ?>" {{ product.product_id in selected ? 'checked' : '' }} />
                                                 </td>
                                                 <td class="text-center">
-                                                    {% if product.image %}
-                                                        <img src="{{ product.image }}" alt="{{ product.name }}" class="img-thumbnail" style="max-width: 60px"/>
-                                                    {% else %}
+                                                    <?php if ($product['image']): ?>
+                                                        <img src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>" class="img-thumbnail" style="max-width: 60px"/>
+                                                    <?php else: ?>
                                                         <span class="img-thumbnail list"><i class="fa fa-camera fa-2x"></i></span>
-                                                    {% endif %}
+                                                    <?php endif; ?>
                                                 </td>
-                                                <td class="text-left">{{ product.name }}</td>
+                                                <td class="text-left"><?php echo $product['name']; ?></td>
                                                 <td class="text-right">
-                                                    <span class="label {{ product.quantity <= 0 ? 'label-warning' : (product.quantity <= 5 ? 'label-danger' : 'label-success' ) }}">{{ product.quantity }}</span>
+                                                    <span class="label <?php echo $product['quantity'] <= 0 ? 'label-warning' : ($product['quantity'] <= 5 ? 'label-danger' : 'label-success' ) ?>"><?php echo $product['quantity']; ?></span>
                                                 </td>
-                                                <td class="text-left">{{ product.status }}</td>
-                                                <td class="text-left">{{ product.price }}</td>
+                                                <td class="text-left"><?php echo $product['status']; ?></td>
+                                                <td class="text-left"><?php echo $product['price']; ?></td>
 
-                                                {% if product.ml_id %}
-                                                    <td class="text-left">{{ product.ml_id }}</td>
+                                                <?php if ($product['ml_id']): ?>
+                                                    <td class="text-left"><?php echo $product['ml_id']; ?></td>
                                                     <td class="text-left">
-                                                        {% if product.ml_category %}
-                                                            <span data-ml-category="{{ product.ml_category }}" class="load-categories"></span><br/>
-                                                        {% else %}
-                                                            {{ text_without_category }}
-                                                        {% endif %}
+                                                        <?php if ($product['ml_category']): ?>
+                                                            <span data-ml-category="<?php echo $product['ml_category']; ?>" class="load-categories"></span><br/>
+                                                        <?php else: ?>
+                                                            <?php echo $text_without_category; ?>
+                                                        <?php endif; ?>
                                                     </td>
-                                                    <td class="text-left">{{ product.status_ml }} </td>
+                                                    <td class="text-left"><?php echo $product['status_ml']; ?> </td>
 
-                                                {% else %}
-                                                    <td class="text-left" colspan="3">{{ text_without_product_in_ml }}</td>
-                                                {% endif %}
+                                                <?php else: ?>
+                                                    <td class="text-left" colspan="3"><?php echo $text_without_product_in_ml; ?></td>
+                                                <?php endif; ?>
 
-                                                <td class="text-right"><a href="{{ product.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                                                <td class="text-right"><a href="<?php echo $product['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                                             </tr>
-                                        {% endfor %}
-                                    {% else %}
+                                        <?php } ?>
+                                    <?php else: ?>
                                         <tr>
-                                            <td class="text-center" colspan="10">{{ text_no_results }}</td>
+                                            <td class="text-center" colspan="10"><?php echo $text_no_results; ?></td>
                                         </tr>
-                                    {% endif %}
+                                    <?php endif; ?>
                                     </tbody>
                                 </table>
                             </div>
                         </form>
                         <div class="row">
-                            <div class="col-sm-6 text-left">{{ pagination }}</div>
-                            <div class="col-sm-6 text-right">{{ results }}</div>
+                            <div class="col-sm-6 text-left"><?php echo $pagination; ?></div>
+                            <div class="col-sm-6 text-right"></div>
                         </div>
                     </div>
                 </div>
@@ -159,7 +146,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">{{ text_add_products_in_ml }}</h3>
+                <h3 class="modal-title"><?php echo $text_add_products_in_ml; ?></h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -172,48 +159,48 @@
                         <div class="row">
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="input-category"><span data-toggle="tooltip" title="{{ help_category_for_ads }}">{{ entry_select_category }}</span></label>
+                                <label class="col-sm-3 control-label" for="input-category"><span data-toggle="tooltip" title="<?php echo $help_category_for_ads; ?>"><?php echo $entry_select_category; ?></span></label>
                                 <div class="col-sm-9" id="input-category">
                                     <select class="form-control mercadolivre-categories" style="width: auto; display:initial" id="category" onchange="loadCategoriesChildren(this.value, 0)">
-                                        <option>{{ entry_select }}</option>
+                                        <option><?php echo $entry_select; ?></option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group required">
-                                <label class="col-sm-3 control-label" for="input-listing-type">{{ entry_ad_type }}</label>
+                                <label class="col-sm-3 control-label" for="input-listing-type"><?php echo $entry_ad_type; ?></label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="input-listing-type" name="ml_listing_type" data-value="{{ listing_type }}">
-                                        <option>{{ entry_select }}</option>
+                                    <select class="form-control" id="input-listing-type" name="ml_listing_type" data-value="<?php echo $listing_type; ?>">
+                                        <option><?php echo $entry_select; ?></option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="input-warranty-type">{{ entry_product_warranty_type }}</label>
+                                <label class="col-sm-3 control-label" for="input-warranty-type"><?php echo $entry_product_warranty_type; ?></label>
                                 <div class="col-sm-9">
                                     <select class="form-control" id="input-warranty-type" name="ml_product_warranty_type" onchange="changeWarranty(this.value)">
-                                        <option value="">{{ without_warranty }}</option>
-                                        <option value="{{ warranty_of_seller }}">{{ warranty_of_seller }}</option>
-                                        <option value="{{ warranty_of_factory }}">{{ warranty_of_factory }}</option>
+                                        <option value=""><?php echo $without_warranty; ?></option>
+                                        <option value="<?php echo $warranty_of_seller; ?>"><?php echo $warranty_of_seller; ?></option>
+                                        <option value="<?php echo $warranty_of_factory; ?>"><?php echo $warranty_of_factory; ?></option>
                                     </select>
                                 </div>
                             </div>
 
                             <div id="warranty_div" style="display: none">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="input-warranty-unit">{{ entry_product_warranty_unit }}</label>
+                                    <label class="col-sm-3 control-label" for="input-warranty-unit"><?php echo $entry_product_warranty_unit; ?></label>
                                     <div class="col-sm-9">
                                         <select class="form-control" id="input-warranty-unit" name="ml_product_warranty_unit">
-                                            <option value="{{ entry_days }}">{{ entry_days }}</option>
-                                            <option value="{{ entry_month }}">{{ entry_month }}</option>
-                                            <option value="{{ entry_years }}">{{ entry_years }}</option>
+                                            <option value="<?php echo $entry_days; ?>"><?php echo $entry_days; ?></option>
+                                            <option value="<?php echo $entry_month; ?>"><?php echo $entry_month; ?></option>
+                                            <option value="<?php echo $entry_years; ?>"><?php echo $entry_years; ?></option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="input-warranty">{{ entry_product_warranty }}</label>
+                                    <label class="col-sm-3 control-label" for="input-warranty"><?php echo $entry_product_warranty; ?></label>
                                     <div class="col-sm-9">
                                         <input type="number" class="form-control" id="input-warranty" name="ml_product_warranty"/>
                                     </div>
@@ -221,21 +208,21 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="input-price-adjustment"><span data-toggle="tooltip" title="{{ help_price_adjustment }}">{{ entry_price_adjustment }}</span></label>
+                                <label class="col-sm-3 control-label" for="input-price-adjustment"><span data-toggle="tooltip" title="<?php echo $help_price_adjustment; ?>"><?php echo $entry_price_adjustment; ?></span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="ml_price_adjustment" value="{{ price_adjustment }}" placeholder="{{ entry_price_adjustment }}" class="form-control" id="input-price-adjustment"/>
+                                    <input type="text" name="ml_price_adjustment" value="<?php echo $price_adjustment; ?>" placeholder="<?php echo $entry_price_adjustment; ?>" class="form-control" id="input-price-adjustment"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="input-subtract-stock">{{ entry_subtract_product }}</label>
+                                <label class="col-sm-3 control-label" for="input-subtract-stock"><?php echo $entry_subtract_product; ?></label>
                                 <div class="col-sm-9">
-                                    <input type="checkbox" name="subtract_product" value="1" placeholder="{{ entry_subtract_product }}" class="form-control" id="input-subtract-stock"/>
+                                    <input type="checkbox" name="subtract_product" value="1" placeholder="<?php echo $entry_subtract_product; ?>" class="form-control" id="input-subtract-stock"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="input-shipping-free"><span data-toggle="tooltip" title="{{ help_shipping_free }}">{{ entry_shipping_free }}</span></label>
+                                <label class="col-sm-3 control-label" for="input-shipping-free"><span data-toggle="tooltip" title="<?php echo $help_shipping_free; ?>"><?php echo $entry_shipping_free; ?></span></label>
                                 <div class="col-sm-8">
                                     <input class="form-control" type="checkbox" {{ shipping_free ? 'checked' : '' }} name="shipping_free" value="1" id="input-shipping-free">
                                 </div>
@@ -246,8 +233,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="sendProducts(document.forms.add_products_in_ml);" id="btn-add-send" data-loading-text="{{ text_loading }}">{{ button_send }}</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ button_cancel }}</button>
+                <button type="button" class="btn btn-primary" onclick="sendProducts(document.forms.add_products_in_ml);" id="btn-add-send" data-loading-text="<?php echo $text_loading; ?>"><?php echo $button_send; ?></button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $button_cancel; ?></button>
             </div>
 
         </div>
@@ -266,18 +253,24 @@
     });
 
     function pauseProducts() {
-        if (validateSelections() && confirm('{{ text_confirm }}')) {
+        if (validateSelections() && confirm('<?php echo $text_confirm; ?>')) {
             var $form = $('#form-product');
-            $form.attr('action', "{{ constant('HTTPS_SERVER') }}index.php?route=extension/module/mercadolivre/pauseProduct&user_token={{ user_token }}");
+            var server = '<?php echo HTTPS_SERVER; ?>';
+            var token = '<?php echo $token; ?>';
+            var url = server + "index.php?route=extension/module/mercadolivre/pauseProduct&token=" + token;
+            $form.attr('action', url);
             $form.submit();
         }
     }
 
     function activeProducts() {
         validateSelections();
-        if (validateSelections() && confirm('{{ text_confirm }}')) {
+        if (validateSelections() && confirm('<?php echo $text_confirm; ?>')) {
             var $form =  $('#form-product');
-            $form.attr('action', "{{ constant('HTTPS_SERVER') }}index.php?route=extension/module/mercadolivre/activeProduct&user_token={{ user_token }}");
+            var server = '<?php echo HTTPS_SERVER; ?>';
+            var token = '<?php echo $token; ?>';
+            var url = server + "index.php?route=extension/module/mercadolivre/activeProduct&token=" + token;
+            $form.attr('action', url);
             $form.submit();
         }
     }
@@ -286,7 +279,7 @@
         var $products = $("input[name='selected[]']:checked");
 
         if (!$products.length) {
-            alert('{{ entry_select_product }}');
+            alert('<?php echo $entry_select_product; ?>');
             return false;
         }
 
@@ -319,7 +312,7 @@
             });
 
             $.ajax({
-                url: 'index.php?route=extension/module/mercadolivre/addProducts&user_token={{ user_token }}',
+                url: 'index.php?route=extension/module/mercadolivre/addProducts&token=<?php echo $token; ?>',
                 type: 'post',
                 dataType: 'json',
                 data: body,
@@ -331,7 +324,7 @@
                 },
                 success: function (json) {
                     if (json['error']) {
-                        $('#sendProductsErrorsContainer').html('<p><strong>{{ message_send_products_error_title }}</strong></p>');
+                        $('#sendProductsErrorsContainer').html('<p><strong><?php echo $message_send_products_error_title; ?></strong></p>');
                         $('#sendProductsErrorsContainer').show();
                         if (json['error']['errors']) {
                             json['error']['errors'].forEach((error) => {
@@ -359,12 +352,12 @@
     function validateForm(body) {
         var $firstCategory = $('.mercadolivre-categories:first');
         if ($firstCategory.val() && !categoryFinished) {
-            alert('{{ message_error_select_category_or_unselect }}');
+            alert('<?php echo $message_error_select_category_or_unselect; ?>');
             return false;
         }
 
         if (body['ml_listing_type'] == '') {
-            alert('{{ message_error_listing_type }}');
+            alert('<?php echo $message_error_listing_type; ?>');
             return false;
         }
 
@@ -372,7 +365,7 @@
     }
 
     function loadCategories() {
-        var country = '{{ ml_country }}';
+        var country = '<?php echo $ml_country; ?>';
 
         $.getJSON(`https://api.mercadolibre.com/sites/${country}/categories`, function (json) {
                 createSelectOptions(json, 'id', 'name', $('.mercadolivre-categories'));
@@ -400,7 +393,7 @@
                 $select.attr('name', 'ml_category');
                 $column.append('<i class="fa fa-check-circle" style="color: green;font-size: 26px;margin-left: 15px;"></i>');
             } else {
-                var $select = $('<select class="form-control mercadolivre-categories" style="width: auto; display: initial;"><option>{{ entry_select_left }}</option></select>');
+                var $select = $('<select class="form-control mercadolivre-categories" style="width: auto; display: initial;"><option><?php echo $entry_select; ?></option></select>');
                 $select.on('change', function () {
                     loadCategoriesChildren(this.value, (indexSelectCall + 1));
                 });
@@ -412,7 +405,9 @@
     }
 
     function filterProducts() {
-        url = '{{ constant('HTTPS_SERVER') }}index.php?route=extension/module/mercadolivre/products&user_token={{ user_token }}';
+        var server = '<?php echo HTTPS_SERVER; ?>';
+        var token = '<?php echo $token; ?>';
+        url = server + 'index.php?route=extension/module/mercadolivre/products&token=' + token;
 
         var filter_name = $('input[name=\'filter_name\']').val();
         if (filter_name) {
@@ -433,7 +428,10 @@
     }
 
     function synchronizeStockPrice() {
-        var url = '{{ constant('HTTPS_SERVER') }}index.php?route=extension/module/mercadolivre/synchronizeStockPrice&user_token={{ user_token }}';
+        var server = '<?php echo HTTPS_SERVER; ?>';
+        var token = '<?php echo $token; ?>';
+        url = server + 'index.php?route=extension/module/mercadolivre/synchronizeStockPrice&token=' + token;
+
         var $products = $("input[name='selected[]']:checked");
 
         var request = { products: $products.map(function (v) { return this.value; }).get() };
@@ -485,7 +483,7 @@
     }
 
     function loadListingsTypes() {
-        var country = '{{ ml_country }}';
+        var country = '<?php echo $ml_country; ?>';
 
         $.getJSON(`https://api.mercadolibre.com/sites/${country}/listing_types`,
             function (json) {
@@ -495,7 +493,7 @@
     }
 
     function createSelectOptions(options, value, description, $select) {
-        $select.html('<option value="">{{ entry_select }}</option>');
+        $select.html('<option value=""><?php echo $entry_select; ?></option>');
         var valueSelected = $select.data('value');
 
         $.each(options, function (i, v) {
@@ -517,4 +515,4 @@
     }
 
 </script>
-{{ footer }}
+<?php echo $footer; ?>

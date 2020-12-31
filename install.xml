@@ -64,12 +64,6 @@ $_['text_mercadolivre_logs']                = 'Logs';
         );
 
         $mercadolivre[] = array(
-            'name'	   => $this->language->get('text_mercadolivre_questions'),
-            'href'     => $this->url->link('extension/module/mercadolivre/questions', 'token=' . $this->session->data['token'], true),
-            'children' => array()
-        );
-
-        $mercadolivre[] = array(
             'name'	   => $this->language->get('text_mercadolivre_products'),
             'href'     => $this->url->link('extension/module/mercadolivre/products', 'token=' . $this->session->data['token'], true),
             'children' => array()
@@ -84,7 +78,7 @@ $_['text_mercadolivre_logs']                = 'Logs';
         if ($this->config->get('module_mercadolivre_status')) {
             $data['menus'][] = array(
               'id'       => 'menu-mercadolivre',
-              'icon'     => 'fa-shopping-bag',
+              'icon'     => 'fa fa-shopping-cart',
               'name'     => $this->language->get('text_mercadolivre'),
               'href'     => '',
               'children' => $mercadolivre

@@ -75,12 +75,14 @@ $_['help_template_description'] = "chaves reservadas disponiveís __TITLE__ , __
 $_['help_image_additional'] = "Imagem a ser adicionada por último no produto";
 $_['help_category_for_ads'] = "Deseja aplicar uma categoria para todos os produtos selecionados, basta selecionar, caso contrário, a categoria será escolhida de acordo com as configurações";
 $_['authentication_url'] = '%sindex.php?route=extension/module/mercadolivre/index';
+$_['notification_url'] = '%sindex.php?route=extension/module/mercadolivre/notification';
 // Text
 $_['text_yes'] = 'Sim';
 $_['text_no'] = 'Não';
 $_['text_without_category'] = 'Sem categoria';
 $_['text_verified_configurations'] = 'Por favor verifique as configurações antes de efetuar esta operação.';
 $_['warning_about_application_uri_redirect'] = 'Em sua aplicação você deve configurar a URI de redirecionado de acordo com a URL: ' . $_['authentication_url'];
+$_['warning_about_notification_uri_redirect'] = 'Configure o seu aplicativo com a URL a seguir, para receber as notificações corretamente: ' . $_['notification_url'];
 $_['text_autheticated'] = 'Parabéns, a sua aplicação já está autenticada.';
 $_['text_confirm'] = 'Deseja realmente fazer isso?';
 $_['text_ml_status_closed'] = 'Encerrado';
@@ -112,6 +114,7 @@ $_['text_last_questions'] = 'Ultimas perguntas recebidas.';
 $_['text_last_orders'] = 'Ultimos pedidos recebidos.';
 $_['text_perform_purchase'] = 'realizou uma compra de: ';
 $_['text_empty'] = 'Vazio';
+$_['text_filter'] = 'Filtros';
 //Tabs
 $_['tab_general'] = 'Configs App';
 $_['tab_product_settings'] = 'Configs do Produto';
