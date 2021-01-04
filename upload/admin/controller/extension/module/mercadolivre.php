@@ -19,9 +19,11 @@ class ControllerExtensionModuleMercadolivre extends Controller
         if ($this->request->server['REQUEST_METHOD'] == 'POST' && $this->validate()) {
             $this->model_setting_setting->editSetting($this->key_prefix, $this->request->post);
             $this->model_extension_module_mercadolivre->deleteCategories();
-            foreach ($this->request->post['categories'] as $key => $item) {
-                $this->model_extension_module_mercadolivre->addCategory($key, $item);
-            }
+			if(!empty($this->request->post['categories'])) {
+				foreach ($this->request->post['categories'] as $key => $item) {
+					$this->model_extension_module_mercadolivre->addCategory($key, $item);
+				}
+			}
             $this->session->data['success'] = $this->language->get('text_success');
             $this->response->redirect($this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=module', true));
         }
