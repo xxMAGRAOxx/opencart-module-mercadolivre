@@ -134,7 +134,7 @@ class Html2Text
             $load_result = $doc->loadHTML($html, LIBXML_NOWARNING | LIBXML_NOERROR | LIBXML_NONET | LIBXML_PARSEHUGE);
             libxml_use_internal_errors($old_internal_errors);
         } else {
-            $load_result = $doc->loadHTML($html);
+            $load_result = @$doc->loadHTML($html);
         }
         if (!$load_result) {
             throw new Html2TextException("Could not load HTML - badly formed?", $html);
